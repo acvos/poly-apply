@@ -1,14 +1,10 @@
-var flatten = require('array-flatten')
+var curry = require('curry')
 
 function isPromise(x) {
   return (x instanceof Promise)
 }
 
 function apply(f, args) {
-  if (typeof f !== 'function') {
-    return f
-  }
-
   if (isPromise(args)) {
     return args.then(function (xs) {
       return apply(f, xs)
@@ -17,11 +13,15 @@ function apply(f, args) {
 
   if (args.find(isPromise)) {
     return Promise.all(args).then(function (xs) {
-      return f.apply(undefined, xs)
+      return apply(f, xs)
     })
+  }
+
+  if (typeof f !== 'function') {
+    return f
   }
 
   return f.apply(undefined, args)
 }
 
-module.exports = apply
+module.exports = curry(apply)

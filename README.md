@@ -8,6 +8,7 @@ Removing the difference between Promises and syncronous function arguments great
 ## Features
 - Seamlessly applies functions to promises and synchronous values
 - Supports functions of one or many arguments
+- Recognises cnostants
 
 ## Installation
 
@@ -20,8 +21,10 @@ npm install poly-apply
 ```javascript
 import apply from 'poly-apply'
 
+
 const wow = (x, y) => `wow ${x} ${y}!`
 
+// Simple usage
 console.log(apply(wow, ['such', 'doge']))
 // -> wow such doge!
 
@@ -30,6 +33,17 @@ apply(wow, ['much', Promise.resolve('approve')]).then(console.log)
 
 apply(wow, Promise.resolve(['very', 'such'])).then(console.log)
 // -> wow very such!
+
+// Higher-order function style
+const wowApplicator = apply(wow)
+
+console.log(wowApplicator(['such', 'doge']))
+// -> wow such doge!
+
+// Constant
+const constant = apply('Much Wow!')
+console.log(constant(['such', 'doge']))
+// -> 'Much Wow!'
 
 ```
 

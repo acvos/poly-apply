@@ -20,7 +20,9 @@
     "url": "https://github.com/acvos/poly-apply.git"
   },
   "author": "Anton Chernikov <achernikov@acvos>",
-  "dependencies": {},
+  "dependencies": {
+    "curry": "^1.2.0"
+  },
   "engines": {
     "node": ">=4.0",
     "npm": ">=2.0"
