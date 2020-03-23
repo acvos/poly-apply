@@ -4,25 +4,31 @@ function isPromise(x) {
   return (x instanceof Promise);
 }
 
-module.exports = function apply(fn, args) {
+function apply(fn, to) {
   // constant
   if (!(fn instanceof Function)) {
     return fn;
   }
   
   // promised arguments
-  if (isPromise(args)) {
-    return args.then(function (xs) {
+  if (isPromise(to)) {
+    return to.then(function (xs) {
       return apply(fn, xs);
     });
   }
+  
+  // accept one direct argument
+  if (!(to instanceof Array)
+      return [to];
 
   // promise in arguments
-  if (args.find(isPromise)) {
-    return Promise.all(args).then(function (xs) {
+  if (to.find(isPromise)) {
+    return Promise.all(to).then(function (xs) {
       return apply(fn, xs);
     });
   }
 
-  return fn.apply(undefined, args);
+  return fn.apply(undefined, to);
 }
+
+module.exports = curry(apply);
