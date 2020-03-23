@@ -1,14 +1,14 @@
 const curry = require('curry');
 
-function isPromise(x) {
-	return (x instanceof Promise);
+function isPromise(value) {
+	return (value instanceof Promise);
 }
 
 function apply(fn, to) {
 	// promised arguments
 	if (isPromise(to)) {
-		return to.then(function (xs) {
-			return apply(fn, xs);
+		return to.then(function (newArgs) {
+			return apply(fn, newArgs);
 		});
 	}
 
@@ -19,8 +19,8 @@ function apply(fn, to) {
 
 	// promise in arguments
 	if (to.find(isPromise)) {
-		return Promise.all(to).then(function (xs) {
-			return apply(fn, xs);
+		return Promise.all(to).then(function (newArgs) {
+			return apply(fn, newArgs);
 		});
 	}
 	
