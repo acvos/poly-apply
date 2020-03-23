@@ -18,8 +18,9 @@ function apply(fn, to) {
   }
   
   // accept one direct argument
-  if (!(to instanceof Array)
+  if (!(to instanceof Array){
       return [to];
+  }
 
   // promise in arguments
   if (to.find(isPromise)) {
