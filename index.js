@@ -5,11 +5,6 @@ function isPromise(x) {
 }
 
 function apply(fn, to) {
-	// constant
- 	if (!(fn instanceof Function)) {
-		return fn;
-	}
-
 	// promised arguments
 	if (isPromise(to)) {
 		return to.then(function (xs) {
@@ -19,7 +14,7 @@ function apply(fn, to) {
 
 	// accept one direct argument
 	if (!(to instanceof Array)){
-		return [to];
+		to = [to];
 	}
 
 	// promise in arguments
@@ -27,6 +22,11 @@ function apply(fn, to) {
 		return Promise.all(to).then(function (xs) {
 			return apply(fn, xs);
 		});
+	}
+	
+	// constant
+ 	if (!(fn instanceof Function)) {
+		return fn;
 	}
 
 	return fn.apply(undefined, to);
