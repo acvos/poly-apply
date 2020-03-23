@@ -18,7 +18,7 @@ function apply(fn, to) {
   }
   
   // accept one direct argument
-  if (!(to instanceof Array){
+  if (!(to instanceof Array)){
       return [to];
   }
 
