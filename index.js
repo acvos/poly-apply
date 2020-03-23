@@ -1,27 +1,28 @@
-var curry = require('curry')
+const curry = require('curry');
 
 function isPromise(x) {
-  return (x instanceof Promise)
+  return (x instanceof Promise);
 }
 
-function apply(f, args) {
+module.exports = function apply(fn, args) {
+  // constant
+  if (!(fn instanceof Function)) {
+    return fn;
+  }
+  
+  // promised arguments
   if (isPromise(args)) {
     return args.then(function (xs) {
-      return apply(f, xs)
-    })
+      return apply(fn, xs);
+    });
   }
 
+  // promise in arguments
   if (args.find(isPromise)) {
     return Promise.all(args).then(function (xs) {
-      return apply(f, xs)
-    })
+      return apply(fn, xs);
+    });
   }
 
-  if (typeof f !== 'function') {
-    return f
-  }
-
-  return f.apply(undefined, args)
+  return fn.apply(undefined, args);
 }
-
-module.exports = curry(apply)
